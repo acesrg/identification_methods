@@ -108,5 +108,5 @@ function validate_identifications(data, Gzi, Gzi_mc)
 	%# INPUT data(iddata): paquete de testeo
 	%# INPUT Gzi(tf): función de transferencia identificada por arx
 	%# INPUT Gzi_mc(tf): función de transferencia identificada por mínimos
-    %#                   cuadrados.
+  %#                   cuadrados.
 end
