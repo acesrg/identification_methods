@@ -61,7 +61,7 @@ function [data_ident, data_validation] = generate_ident_package(input_signal, ou
 	%# INPUT output_signal (double-sym) la señal de salida
 	%# INPUT sample_time (double) tiempo de muestreo
 	%# OUTPUT [data_ident(iddata), data_validation(iddata)]
-
+%Estoy haciendo un cambiogit 
 end
 
 function Gzi = discrete_ident_arx(data, Ts, focus_mode, na, nb, nk, residual_analysis)
@@ -90,7 +90,7 @@ function Gzi_mc = discrete_ident_recursive_least_squares(data, Ts, plot_ident)
 	%# OUTPUT Gzi_mc(tf): función de transferencia identificada
 
 end
-
+%XXXXXXXXXXXZXZXXXXXXXXXXXXXXX
 function analyze_residuals(data, sys_id, sampling_frequency)
     %#ANALYZE_RESIDUALS análisis de residuos y plot
 	%#
@@ -100,6 +100,7 @@ function analyze_residuals(data, sys_id, sampling_frequency)
 	%# INPUT sampling_frequency(double): frecuencia de muestreo
 
 end
+
 
 function validate_identifications(data, Gzi, Gzi_mc)
     %#VALIDATE_IDENTIFICATIONS 
