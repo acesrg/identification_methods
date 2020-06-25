@@ -101,7 +101,7 @@ function analyze_residuals(data, sys_id, sampling_frequency)
 
 end
 
-function validate_identifications(data, Gzi, Gzi_mc, N)
+function validate_identifications(data, Gzi, Gzi_mc)
     %#VALIDATE_IDENTIFICATIONS 
 	%#
 	%# SYNOPSIS validate_identifications(data, Gzi, Gzi_mc)
@@ -113,11 +113,12 @@ function validate_identifications(data, Gzi, Gzi_mc, N)
     [y_sys, fit] = compare(data, Gzi);
     [y_mc, fit_mc] = compare(data, Gzi_mc);
     
-    t = (1:N);
+    data_length = length(data);
+    t = (1:data_length);
     figure(3);
     plot(t, y_sys.OutputData, 'r', t, y_mc.OutputData, 'g--', t, data.OutputData, 'b-.');
     title('Validación de resultados');
-    set(gca, 'XTickLabel', 60:10:N);
+    set(gca, 'XTickLabel', 60:10:data_length);
     xlabel('Tiempo [s]');
     legend(sprintf('ARX (%2.2f)', fit), sprintf('RLS (%2.2f)', fit_mc), 'Salida', 'Location', 'SouthEast');
     print -dsvg validate-model.svg
