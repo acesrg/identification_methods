@@ -57,25 +57,26 @@ function [data_ident, data_validation] = generate_ident_package(input_signal, ou
 	%#GENERATE_IDENT_PACKAGE arma e imprime el paquete de datos
 	%#
 	%# SYNOPSIS generate_ident_package(input_signal, output_signal, sample_time, ident_proportion, plot_package)
-	%# INPUT input_signal: (simbólico) la señal de entrada
-	%# INPUT output_signal (simbólico) la señal de salida
-	%# INPUT sample_time (float) tiempo de muestreo
-	%# OUTPUT [data_ident(paquete), data_validation(paquete)]
+	%# INPUT input_signal: (double-sym) la señal de entrada
+	%# INPUT output_signal (double-sym) la señal de salida
+	%# INPUT sample_time (double) tiempo de muestreo
+	%# OUTPUT [data_ident(iddata), data_validation(iddata)]
 
 end
 
 function Gzi = discrete_ident_arx(data, Ts, focus_mode, na, nb, nk, residual_analysis)
-    %#DISCRETE_IDENT_ARX arma e imprime el paquete de datos
-	%#
+    %#DISCRETE_IDENT_ARX identifica por ARX según un paquete de datos dado y constantes
+	%#definidas, residual_analysis indica si se debe plotear un análisis de residuos
+    %# 
 	%# SYNOPSIS discrete_ident_arx(data, Ts, focus_mode, na, nb, nk, residual_analysis)
-	%# INPUT data(package): 
-	%# INPUT Ts(float):
-	%# INPUT focus_mode(string):
-	%# INPUT na(float):
-	%# INPUT nb(float):
-	%# INPUT nk(float):
-	%# INPUT residual_analysis(boolean):
-	%# OUTPUT Gzi(tf):
+	%# INPUT data(iddata): paquete de identificación
+	%# INPUT Ts(double): tiempo de muestreo
+	%# INPUT focus_mode(*char): modo para Opt.Focus
+	%# INPUT na(double): 
+	%# INPUT nb(double):
+	%# INPUT nk(double):
+	%# INPUT residual_analysis(logical): opción de analizar los residuos
+	%# OUTPUT Gzi(tf): función de transferencia del sistema identificado por arx
 
 end
 
@@ -83,20 +84,20 @@ function Gzi_mc = discrete_ident_recursive_least_squares(data, Ts, plot_ident)
 	%#DISCRETE_IDENT_RECURSIVE_LEAST_SQUARES método de los minimos cuadrados
 	%#
 	%# SYNOPSIS discrete_ident_recursive_least_squares(data, Ts, plot_ident)
-	%# INPUT data(paquete): 
-	%# INPUT Ts(float):
-	%# INPUT plot_ident(boolean):
-	%# OUTPUT Gzi_mc:
+	%# INPUT data(iddata): paquete de identificación
+	%# INPUT Ts(double): tiempo de muestreo
+	%# INPUT plot_ident(logical): opción de plotear la identificación
+	%# OUTPUT Gzi_mc(tf): función de transferencia identificada
 
 end
 
 function analyze_residuals(data, sys_id, sampling_frequency)
-    %#ANALYZE_RESIDUALS análisis de residuos
+    %#ANALYZE_RESIDUALS análisis de residuos y plot
 	%#
 	%# SYNOPSIS analyze_residuals(data, sys_id, sampling_frequency)
-	%# INPUT data(paquete): 
-	%# INPUT sys_id( - ):
-	%# INPUT sampling_frequency(float):
+	%# INPUT data(iddata): paquete de identificación
+	%# INPUT sys_id(idpoly): polinomio de identificación arx
+	%# INPUT sampling_frequency(double): frecuencia de muestreo
 
 end
 
@@ -104,7 +105,8 @@ function validate_identifications(data, Gzi, Gzi_mc)
     %#VALIDATE_IDENTIFICATIONS 
 	%#
 	%# SYNOPSIS validate_identifications(data, Gzi, Gzi_mc)
-	%# INPUT data(paquete): 
-	%# INPUT Gzi(tf):
-	%# INPUT Gzi_mc(tf):
+	%# INPUT data(iddata): paquete de testeo
+	%# INPUT Gzi(tf): función de transferencia identificada por arx
+	%# INPUT Gzi_mc(tf): función de transferencia identificada por mínimos
+  %#                   cuadrados.
 end
