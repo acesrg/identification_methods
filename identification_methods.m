@@ -7,6 +7,8 @@ s = tf('s');
 Gs = (20*s+500)/((3*s+1)*(5*s+1))
 % Periodo de muestreo
 Ts = 0.1;
+% Frecuencia de Muestreo
+frec_sampl = 1/Ts;
 % Discretizacion
 Gz = c2d(Gs, Ts, 'zoh')
 
@@ -98,7 +100,30 @@ function analyze_residuals(data, sys_id, sampling_frequency)
 	%# INPUT data(iddata): paquete de identificación
 	%# INPUT sys_id(idpoly): polinomio de identificación arx
 	%# INPUT sampling_frequency(double): frecuencia de muestreo
+    
+    e = resid(sys_id, data);
 
+    figure(); 
+    subplot(2, 2, 1); 
+    [Rmm, lags] = xcorr(e.y, 'coeff');
+    Rmm = Rmm(lags>0); lags = lags(lags>0);
+    plot(lags/sampling_frequency,Rmm); xlabel('Lag [s]');
+    title('Auto-corr. residuo');
+	
+    subplot(2, 2, 2); 
+    [Rmm, lags] = xcorr(e.y, data.OutputData, 'coeff');
+    Rmm = Rmm(lags>0); lags = lags(lags>0);
+    plot(lags/sampling_frequency, Rmm); xlabel('Lag [s]');
+    title('Corr. residuo/salida');
+
+    subplot(2, 2, 3); 
+    histfit(e.y); title('Histograma residuo');
+
+    subplot(2, 2, 4); 
+    [Rmm, lags] = xcorr(e.y, data.InputData, 'coeff');
+    Rmm = Rmm(lags>0); lags = lags(lags>0);
+    plot(lags/sampling_frequency, Rmm); xlabel('Lag [s]');
+    title('Corr. residuo/entrada');
 end
 
 function validate_identifications(data, Gzi, Gzi_mc)
