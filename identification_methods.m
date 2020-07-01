@@ -61,7 +61,7 @@ function [data_ident, data_validation] = generate_ident_package(input_signal, ou
 	%# INPUT output_signal (double-sym) la señal de salida
 	%# INPUT sample_time (double) tiempo de muestreo
 	%# OUTPUT [data_ident(iddata), data_validation(iddata)]
-
+  
 end
 
 function Gzi = discrete_ident_arx(data, Ts, focus_mode, na, nb, nk, residual_analysis)
@@ -88,7 +88,22 @@ function Gzi_mc = discrete_ident_recursive_least_squares(data, Ts, plot_ident)
 	%# INPUT Ts(double): tiempo de muestreo
 	%# INPUT plot_ident(logical): opción de plotear la identificación
 	%# OUTPUT Gzi_mc(tf): función de transferencia identificada
+    
+    N1=plot_ident;
+    
+    n = 3;
+    u = data.InputData;
+    y = data.OutputData;
+    Theta = zeros(4, N1);
+    P = 1e12*eye(4);
 
+    for k = n:N1-1
+        Phi = [-y(k-1) -y(k-2) u(k-1) u(k-2)];
+        K = P*Phi'/(1+(Phi*P*Phi')); 
+        Theta(:,k+1) = Theta(:,k)+K*(y(k)-Phi*Theta(:,k));
+        P = P-(K*Phi*P);
+    end
+    Gzi_mc = tf(Theta(3:4,N1)', [1 Theta(1:2,N1)'], Ts)
 end
 
 function analyze_residuals(data, sys_id, sampling_frequency)
