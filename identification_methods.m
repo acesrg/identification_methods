@@ -36,7 +36,6 @@ Gzi = discrete_ident_arx(data_ident, Ts, focus_mode, na, nb, nk, residual_analys
 %% Identifico por minimos cuadrados en forma recursiva
 plot_ident = true;
 Gzi_mc = discrete_ident_recursive_least_squares(data_ident, Ts, plot_ident)
-
 %% Validacion de resultados
 validate_identifications(data_test, Gzi, Gzi_mc)
 
@@ -55,14 +54,18 @@ function noisy = add_white_noise_to_func(clean_signal, noise_amplitude)
 end
 
 function [data_ident, data_validation] = generate_ident_package(input_signal, output_signal, sample_time, ident_proportion, plot_package)
-	%#GENERATE_IDENT_PACKAGE arma e imprime el paquete de datos
-	%#
-	%# SYNOPSIS generate_ident_package(input_signal, output_signal, sample_time, ident_proportion, plot_package)
-	%# INPUT input_signal: (double-sym) la señal de entrada
-	%# INPUT output_signal (double-sym) la señal de salida
-	%# INPUT sample_time (double) tiempo de muestreo
-	%# OUTPUT [data_ident(iddata), data_validation(iddata)]
-  
+    % 	GENERATE_IDENT_PACKAGE arma e imprime el paquete de datos
+    % 	
+    % 	 SYNOPSIS generate_ident_package(input_signal, output_signal, sample_time, ident_proportion, plot_package)
+    % 	 INPUT input_signal: (double-sym) la señal de entrada
+    % 	 INPUT output_signal (double-sym) la señal de salida
+    % 	 INPUT sample_time (double) tiempo de muestreo
+    % 	 OUTPUT [data_ident(iddata), data_validation(iddata)]
+    % Armo el paquete de datos
+    N1 = floor(N/2);
+    data = iddata(y, u, Ts);
+    data_ident = data(1:N1);
+    data_test = data(N1+1:N);
 end
 
 function Gzi = discrete_ident_arx(data, Ts, focus_mode, na, nb, nk, residual_analysis)
@@ -116,6 +119,7 @@ function analyze_residuals(data, sys_id, sampling_frequency)
 	%# INPUT sampling_frequency(double): frecuencia de muestreo
 
 end
+
 
 function validate_identifications(data, Gzi, Gzi_mc)
     %#VALIDATE_IDENTIFICATIONS 
