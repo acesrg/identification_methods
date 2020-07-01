@@ -1,4 +1,4 @@
-% Ejercicio 1 - Cambio acá para no hacer cambios
+% Ejercicio 1
 clear; close all; clc
 
 %% Apartado A
@@ -54,14 +54,14 @@ function noisy = add_white_noise_to_func(clean_signal, noise_amplitude)
 end
 
 function [data_ident, data_validation] = generate_ident_package(input_signal, output_signal, sample_time, ident_proportion, plot_package)
-	%#GENERATE_IDENT_PACKAGE arma e imprime el paquete de datos
-	%#
-	%# SYNOPSIS generate_ident_package(input_signal, output_signal, sample_time, ident_proportion, plot_package)
-	%# INPUT input_signal: (double-sym) la señal de entrada
-	%# INPUT output_signal (double-sym) la señal de salida
-	%# INPUT sample_time (double) tiempo de muestreo
-	%# OUTPUT [data_ident(iddata), data_validation(iddata)]
-%Estoy haciendo un cambiogit 
+	GENERATE_IDENT_PACKAGE arma e imprime el paquete de datos
+	
+	 SYNOPSIS generate_ident_package(input_signal, output_signal, sample_time, ident_proportion, plot_package)
+	 INPUT input_signal: (double-sym) la señal de entrada
+	 INPUT output_signal (double-sym) la señal de salida
+	 INPUT sample_time (double) tiempo de muestreo
+	 OUTPUT [data_ident(iddata), data_validation(iddata)]
+
 end
 
 function Gzi = discrete_ident_arx(data, Ts, focus_mode, na, nb, nk, residual_analysis)
@@ -90,7 +90,7 @@ function Gzi_mc = discrete_ident_recursive_least_squares(data, Ts, plot_ident)
 	%# OUTPUT Gzi_mc(tf): función de transferencia identificada
 
 end
-%XXXXXXXXXXXZXZXXXXXXXXXXXXXXX
+
 function analyze_residuals(data, sys_id, sampling_frequency)
     %#ANALYZE_RESIDUALS análisis de residuos y plot
 	%#
