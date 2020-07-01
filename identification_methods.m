@@ -50,6 +50,7 @@ function noisy = add_white_noise_to_func(clean_signal, noise_amplitude)
 	%# OUTPUT noisy (simbólico) señal con ruido agregado
 	%#
 
+        noiseSignal = awgn (clean_signal, snr)
 
 end
 
