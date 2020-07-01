@@ -36,7 +36,6 @@ Gzi = discrete_ident_arx(data_ident, Ts, focus_mode, na, nb, nk, residual_analys
 %% Identifico por minimos cuadrados en forma recursiva
 plot_ident = true;
 Gzi_mc = discrete_ident_recursive_least_squares(data_ident, Ts, plot_ident)
-
 %% Validacion de resultados
 validate_identifications(data_test, Gzi, Gzi_mc)
 
@@ -62,6 +61,11 @@ function [data_ident, data_validation] = generate_ident_package(input_signal, ou
 	%# INPUT output_signal (double-sym) la señal de salida
 	%# INPUT sample_time (double) tiempo de muestreo
 	%# OUTPUT [data_ident(iddata), data_validation(iddata)]
+% Armo el paquete de datos
+N1 = floor(N/2);
+data = iddata(y, u, Ts);
+data_ident = data(1:N1);
+data_test = data(N1+1:N);
 end
 
 function Gzi = discrete_ident_arx(data, Ts, focus_mode, na, nb, nk, residual_analysis)
