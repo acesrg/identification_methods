@@ -90,7 +90,7 @@ function Gzi_mc = discrete_ident_recursive_least_squares(data, Ts, plot_ident)
 	%# OUTPUT Gzi_mc(tf): función de transferencia identificada
     
     N1=plot_ident;
-    
+     %prueba
     n = 3;
     u = data.InputData;
     y = data.OutputData;
