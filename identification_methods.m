@@ -38,7 +38,7 @@ plot_ident = true;
 Gzi_mc = discrete_ident_recursive_least_squares(data_ident, Ts, plot_ident)
 
 %% Validacion de resultados
-validate_identifications(data_test, Gzi, Gzi_mc)
+validate_identifications(data_test, Gzi, Gzi_mc, N1)
 
 
 function noisy = add_white_noise_to_func(clean_signal, noise_amplitude)
@@ -108,5 +108,18 @@ function validate_identifications(data, Gzi, Gzi_mc)
 	%# INPUT data(iddata): paquete de testeo
 	%# INPUT Gzi(tf): función de transferencia identificada por arx
 	%# INPUT Gzi_mc(tf): función de transferencia identificada por mínimos
-  %#                   cuadrados.
+    %#                              cuadrados.
+  
+    [y_sys, fit] = compare(data, Gzi);
+    [y_mc, fit_mc] = compare(data, Gzi_mc);
+    
+    data_length = length(data);
+    t = (1:data_length);
+    figure(3);
+    plot(t, y_sys.OutputData, 'r', t, y_mc.OutputData, 'g--', t, data.OutputData, 'b-.');
+    title('Validación de resultados');
+    set(gca, 'XTickLabel', 60:10:data_length);
+    xlabel('Tiempo [s]');
+    legend(sprintf('ARX (%2.2f)', fit), sprintf('RLS (%2.2f)', fit_mc), 'Salida', 'Location', 'SouthEast');
+    print -dsvg validate-model.svg
 end
