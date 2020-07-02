@@ -38,7 +38,6 @@ Gzi = discrete_ident_arx(data_ident, Ts, focus_mode, na, nb, nk, residual_analys
 %% Identifico por minimos cuadrados en forma recursiva
 plot_ident = true;
 Gzi_mc = discrete_ident_recursive_least_squares(data_ident, Ts, plot_ident)
-
 %% Validacion de resultados
 validate_identifications(data_test, Gzi, Gzi_mc, N1)
 
@@ -52,6 +51,7 @@ function noisy = add_white_noise_to_func(clean_signal, noise_amplitude)
 	%# OUTPUT noisy (simbólico) señal con ruido agregado
 	%#
 
+        noiseSignal = awgn (clean_signal, snr)
 
 end
 
@@ -63,7 +63,11 @@ function [data_ident, data_validation] = generate_ident_package(input_signal, ou
 	%# INPUT output_signal (double-sym) la señal de salida
 	%# INPUT sample_time (double) tiempo de muestreo
 	%# OUTPUT [data_ident(iddata), data_validation(iddata)]
-
+% Armo el paquete de datos
+N1 = floor(N/2);
+data = iddata(y, u, Ts);
+data_ident = data(1:N1);
+data_test = data(N1+1:N);
 end
 
 function Gzi = discrete_ident_arx(data, Ts, focus_mode, na, nb, nk, residual_analysis)
@@ -90,7 +94,22 @@ function Gzi_mc = discrete_ident_recursive_least_squares(data, Ts, plot_ident)
 	%# INPUT Ts(double): tiempo de muestreo
 	%# INPUT plot_ident(logical): opción de plotear la identificación
 	%# OUTPUT Gzi_mc(tf): función de transferencia identificada
+    
+    N1=plot_ident;
+     %prueba
+    n = 3;
+    u = data.InputData;
+    y = data.OutputData;
+    Theta = zeros(4, N1);
+    P = 1e12*eye(4);
 
+    for k = n:N1-1
+        Phi = [-y(k-1) -y(k-2) u(k-1) u(k-2)];
+        K = P*Phi'/(1+(Phi*P*Phi')); 
+        Theta(:,k+1) = Theta(:,k)+K*(y(k)-Phi*Theta(:,k));
+        P = P-(K*Phi*P);
+    end
+    Gzi_mc = tf(Theta(3:4,N1)', [1 Theta(1:2,N1)'], Ts)
 end
 
 function analyze_residuals(data, sys_id, sampling_frequency)
@@ -125,6 +144,7 @@ function analyze_residuals(data, sys_id, sampling_frequency)
     plot(lags/sampling_frequency, Rmm); xlabel('Lag [s]');
     title('Corr. residuo/entrada');
 end
+
 
 function validate_identifications(data, Gzi, Gzi_mc)
     %#VALIDATE_IDENTIFICATIONS 
