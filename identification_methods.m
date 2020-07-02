@@ -71,15 +71,24 @@ function Gzi = discrete_ident_arx(data, Ts, focus_mode, na, nb, nk, residual_ana
 	%#definidas, residual_analysis indica si se debe plotear un análisis de residuos
     %# 
 	%# SYNOPSIS discrete_ident_arx(data, Ts, focus_mode, na, nb, nk, residual_analysis)
-	%# INPUT data(iddata): paquete de identificación
-	%# INPUT Ts(double): tiempo de muestreo
-	%# INPUT focus_mode(*char): modo para Opt.Focus
-	%# INPUT na(double): 
-	%# INPUT nb(double):
-	%# INPUT nk(double):
-	%# INPUT residual_analysis(logical): opción de analizar los residuos
-	%# OUTPUT Gzi(tf): función de transferencia del sistema identificado por arx
+	%# INPUT data(package): 
+	%# INPUT Ts(float):
+	%# INPUT focus_mode(string):
+	%# INPUT na(float):
+	%# INPUT nb(float):
+	%# INPUT nk(float):
+	%# INPUT residual_analysis(boolean):
+	%# OUTPUT Gzi(tf):
+    Opt = arxOptions;                     
+    Opt.Focus = focus_mode;   
+    sys_id = arx(data, [na nb nk], Opt);
+    [num, den] = tfdata(sys_id);
+    Gzi = tf(num, den, Ts)
 
+    frecuency_sampling = 1/Ts;
+    if residual_analysis
+        analyze_residuals(data, sys_id, frecuency_sampling)
+    end
 end
 
 function Gzi_mc = discrete_ident_recursive_least_squares(data, Ts, plot_ident)
