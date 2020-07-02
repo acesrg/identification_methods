@@ -7,8 +7,6 @@ s = tf('s');
 Gs = (20*s+500)/((3*s+1)*(5*s+1))
 % Periodo de muestreo
 Ts = 0.1;
-% Frecuencia de Muestreo
-frec_sampl = 1/Ts;
 % Discretizacion
 Gz = c2d(Gs, Ts, 'zoh')
 
